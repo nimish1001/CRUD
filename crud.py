@@ -235,3 +235,97 @@ stdData.pack(pady=10)
 btnBack2.pack(pady =10)
 btnGraph.pack(pady =10)
 viewStu.withdraw()
+
+#--------------------------------------------------------------------------------------------------------------
+#Update Data
+updStu = Toplevel(root)
+updStu.title("Update Student Details")
+updStu.geometry("500x500+500+200")
+
+def f8():
+    updStu.withdraw()
+    root.deiconify()
+def f10():
+    con = None
+    if len(enuRoll.get()) == 0:
+            messagebox.showerror('Error !', "Roll Number can\'t be empty !")
+            enuRoll.focus()
+            return  
+    if not enuRoll.get().isdigit():
+        messagebox.showerror('Error !', "Roll number must be integer !")
+        enuRoll.focus()
+        return
+    if len(enuName.get()) <2:
+        messagebox.showerror('Error !', "Name must contain atleast two characters !")
+        enuName.focus()
+        return
+    if not enuName.get().isalpha():
+        messagebox.showerror('Error !', "Invalid Name !")
+        enuName.focus()
+        return
+    if  not enuMarks.get().isdigit():
+        messagebox.showerror('Error !', "Marks must be numeric value between 0 to 100 !")
+        enuMarks.focus()
+        return  
+    if int(enuMarks.get()) <0 or int(enuMarks.get())>100:
+        messagebox.showerror('Error !', "Marks must lie within 0 to 100 !")
+        enuMarks.focus()
+        return                      
+    try:
+        con = cx_Oracle.connect('system/abc123')
+        rno = int(enuRoll.get())
+        name = enuName.get()
+        marks = int(enuMarks.get())
+        cursor = con.cursor()
+        sql="select roll from students"
+        cursor.execute(sql)
+        data1 = cursor.fetchall()
+        present=False
+        for d in data1:
+            if d[0]==rno:
+                present=True
+                break
+        if not present:
+            messagebox.showerror("Error!", "Roll Number not found !")
+            enuRoll.focus()
+            return
+        else:
+            sql = "update students set name= '%s', marks='%d' where roll='%d'"
+            args = (name, marks, rno)
+            cursor.execute(sql%args)
+            con.commit()
+            messagebox.showinfo('Success !', 'Recored updated successfully')
+            enuRoll.delete(0, END)
+            enuName.delete(0, END)
+            enuMarks.delete(0, END)
+            enuRoll.focus()
+    except cx_Oracle.DatabaseError:
+        con.rollback()
+        msg = "Record could not be updated !"
+        messagebox.showerror('Error !', msg)
+    finally:
+        if con is not None:
+            con.close()        
+
+
+lbluRoll = Label(updStu, text = "Enter Roll Number",font=('Times New Roman', 16, 'bold'))
+lbluName = Label(updStu, text = "Enter Name",font=('Times New Roman', 16, 'bold'))
+lbluMarks = Label(updStu, text = "Enter Marks",font=('Times New Roman', 16, 'bold'))
+enuRoll = Entry(updStu, bd=5, font=('Times New Roman', 16))
+enuName = Entry(updStu, bd=5, font=('Times New Roman', 16))
+enuMarks = Entry(updStu, bd=5, font=('Times New Roman', 16))
+btnuSave = Button(updStu, text='Update', font=('Times New Roman', 16, 'bold'), width=10, command=f10)
+btnuBack1 = Button(updStu, text='Back', font=('Times New Roman', 16, 'bold'), width=10, command=f8)
+
+lbluRoll.pack(pady=10)
+enuRoll.pack(pady=10)
+
+lbluName.pack(pady=10)
+enuName.pack(pady=10)
+
+lbluMarks.pack(pady=10)
+enuMarks.pack(pady=10)
+
+btnuSave.pack(pady=10)
+btnuBack1.pack(pady=10)
+updStu.withdraw()
