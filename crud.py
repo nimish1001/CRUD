@@ -182,3 +182,56 @@ enMarks.pack(pady=10)
 btnSave.pack(pady=10)
 btnaBack1.pack(pady=10)
 addStu.withdraw()
+
+
+#--------------------------------------------------------------------------------------------------------------
+#View Data
+
+viewStu = Toplevel(root)
+viewStu.title("View Student Details")
+viewStu.geometry("500x500+500+200")
+
+def f7():
+        viewStu.withdraw()
+        root.deiconify()
+
+def f12():
+        con=None
+        try:
+            con = cx_Oracle.connect('system/abc123')
+            cursor = con.cursor()
+            sql = "select roll, name, marks from students"
+            cursor.execute(sql)
+            data = cursor.fetchall()
+            import operator
+            sortedlist = sorted(data, key=operator.itemgetter(2), reverse=True)
+            dname= []
+            droll = []
+            for i in sortedlist:
+                dname.append(i[1])
+                droll.append(i[2])
+            dname = dname[:5]
+            droll = droll[:5]
+            x = np.arange(len(dname))
+            plt.bar(x, droll,width=0.25)
+            plt.xticks(x, dname)
+            plt.title("Top Students")
+            plt.xlabel("Name")
+            plt.ylabel('Marks (in %%)')
+            plt.grid()
+            plt.legend()
+            plt.show()
+        except cx_Oracle.DatabaseError:
+            messagebox.showerror('Error!', "Records not found !")
+        finally:
+            if con is not None:
+                con.close()        
+
+btnBack2 = Button(viewStu, text='Back', font=('Times New Roman', 16, 'bold'), width=10, command=f7)
+btnGraph = Button(viewStu, text='Graph', font=('Times New Roman', 16, 'bold'), width=10, command=f12)
+stdData = scrolledtext.ScrolledText(viewStu, width=50, height=20)
+
+stdData.pack(pady=10)
+btnBack2.pack(pady =10)
+btnGraph.pack(pady =10)
+viewStu.withdraw()
