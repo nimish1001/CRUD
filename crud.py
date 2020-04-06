@@ -183,7 +183,6 @@ btnSave.pack(pady=10)
 btnaBack1.pack(pady=10)
 addStu.withdraw()
 
-
 #--------------------------------------------------------------------------------------------------------------
 #View Data
 
@@ -329,3 +328,5 @@ enuMarks.pack(pady=10)
 btnuSave.pack(pady=10)
 btnuBack1.pack(pady=10)
 updStu.withdraw()
+
+
