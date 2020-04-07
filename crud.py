@@ -330,3 +330,68 @@ btnuBack1.pack(pady=10)
 updStu.withdraw()
 
 
+#--------------------------------------------------------------------------------------------------------------
+#Delete Student
+delStu = Toplevel(root)
+delStu.title("Delete Student Record")
+delStu.geometry("500x500+500+200")
+
+def f9():
+    delStu.withdraw()
+    root.deiconify()
+def f11():
+    if len(endRoll.get()) == 0:
+            messagebox.showerror('Error !', "Roll Number can\'t be empty !")
+            endRoll.focus()
+            return  
+    if not endRoll.get().isdigit():
+        messagebox.showerror('Error !', "Roll number must be integer !")
+        endRoll.focus()
+        return
+    try:
+        con = cx_Oracle.connect('system/abc123')
+        rno = int(endRoll.get())
+        cursor = con.cursor()
+        sql="select roll from students"
+        cursor.execute(sql)
+        data4 = cursor.fetchall()
+        present=False
+        for d in data4:
+            if d[0]==rno:
+                present=True
+                break
+        if not present:
+            messagebox.showerror("Error!", "Roll Number not found !")
+            endRoll.focus()
+            return
+        else:
+            sql = "delete from students where roll='%d'"
+            args = (rno)
+            cursor.execute(sql%args)
+            con.commit()
+            messagebox.showinfo('Success !', 'Recored deleted successfully')
+            endRoll.delete(0, END)
+            endRoll.focus()
+    except cx_Oracle.DatabaseError:
+        con.rollback()
+        msg = "Record could not be deleted !"
+        messagebox.showerror('Error !', msg)
+    finally:
+        if con is not None:
+            con.close()      
+
+       
+
+lbldRoll = Label(delStu, text = "Enter Roll Number",font=('Times New Roman', 16, 'bold'))
+endRoll = Entry(delStu, bd=5, font=('Times New Roman', 16))
+btndDelete = Button(delStu, text='Delete', font=('Times New Roman', 16, 'bold'), width=10, command=f11)
+btndBack1 = Button(delStu, text='Back', font=('Times New Roman', 16, 'bold'), width=10, command=f9)
+
+lbldRoll.pack(pady=10)
+endRoll.pack(pady=10)
+
+btndDelete.pack(pady=10)
+btndBack1.pack(pady=10)
+delStu.withdraw()
+
+root.mainloop()
