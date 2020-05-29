@@ -257,10 +257,17 @@ btnSave.pack(pady=10)
 btnaBack1.pack(pady=10)
 addStu.withdraw()
 
+<<<<<<< HEAD
 # --------------------------------------------------------------------------------------------------------------
 # View Data
 
 viewStu = Toplevel(mainMenu)
+=======
+#--------------------------------------------------------------------------------------------------------------
+#View Data
+
+viewStu = Toplevel(root)
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
 viewStu.title("View Student Details")
 viewStu.geometry("500x500+500+200")
 
@@ -314,6 +321,7 @@ btnBack2.pack(pady=10)
 btnGraph.pack(pady=10)
 viewStu.withdraw()
 
+<<<<<<< HEAD
 # --------------------------------------------------------------------------------------------------------------
 # Update Data
 updStu = Toplevel(mainMenu)
@@ -332,19 +340,42 @@ def f10():
         messagebox.showerror('Error !', "Roll Number can\'t be empty !")
         enuRoll.focus()
         return
+=======
+#--------------------------------------------------------------------------------------------------------------
+#Update Data
+updStu = Toplevel(root)
+updStu.title("Update Student Details")
+updStu.geometry("500x500+500+200")
+
+def f8():
+    updStu.withdraw()
+    root.deiconify()
+def f10():
+    con = None
+    if len(enuRoll.get()) == 0:
+            messagebox.showerror('Error !', "Roll Number can\'t be empty !")
+            enuRoll.focus()
+            return  
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
     if not enuRoll.get().isdigit():
         messagebox.showerror('Error !', "Roll number must be integer !")
         enuRoll.focus()
         return
+<<<<<<< HEAD
     if len(enuName.get()) < 2:
         messagebox.showerror(
             'Error !', "Name must contain atleast two characters !")
+=======
+    if len(enuName.get()) <2:
+        messagebox.showerror('Error !', "Name must contain atleast two characters !")
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
         enuName.focus()
         return
     if not enuName.get().isalpha():
         messagebox.showerror('Error !', "Invalid Name !")
         enuName.focus()
         return
+<<<<<<< HEAD
     if not enuMarks.get().isdigit():
         messagebox.showerror(
             'Error !', "Marks must be numeric value between 0 to 100 !")
@@ -356,10 +387,23 @@ def f10():
         return
     try:
         con = sqlite3.connect('cruddb.sqlite')
+=======
+    if  not enuMarks.get().isdigit():
+        messagebox.showerror('Error !', "Marks must be numeric value between 0 to 100 !")
+        enuMarks.focus()
+        return  
+    if int(enuMarks.get()) <0 or int(enuMarks.get())>100:
+        messagebox.showerror('Error !', "Marks must lie within 0 to 100 !")
+        enuMarks.focus()
+        return                      
+    try:
+        con = cx_Oracle.connect('system/abc123')
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
         rno = int(enuRoll.get())
         name = enuName.get()
         marks = int(enuMarks.get())
         cursor = con.cursor()
+<<<<<<< HEAD
         sql = "select roll from students"
         cursor.execute(sql)
         data1 = cursor.fetchall()
@@ -367,27 +411,47 @@ def f10():
         for d in data1:
             if d[0] == rno:
                 present = True
+=======
+        sql="select roll from students"
+        cursor.execute(sql)
+        data1 = cursor.fetchall()
+        present=False
+        for d in data1:
+            if d[0]==rno:
+                present=True
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
                 break
         if not present:
             messagebox.showerror("Error!", "Roll Number not found !")
             enuRoll.focus()
             return
         else:
+<<<<<<< HEAD
             sql = "update students set name= ?, marks=? where roll=?"
             args = (name, marks, rno)
             cursor.execute(sql, args)
+=======
+            sql = "update students set name= '%s', marks='%d' where roll='%d'"
+            args = (name, marks, rno)
+            cursor.execute(sql%args)
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
             con.commit()
             messagebox.showinfo('Success !', 'Recored updated successfully')
             enuRoll.delete(0, END)
             enuName.delete(0, END)
             enuMarks.delete(0, END)
             enuRoll.focus()
+<<<<<<< HEAD
     except sql3lite.Error:
+=======
+    except cx_Oracle.DatabaseError:
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
         con.rollback()
         msg = "Record could not be updated !"
         messagebox.showerror('Error !', msg)
     finally:
         if con is not None:
+<<<<<<< HEAD
             con.close()
 
 
@@ -404,6 +468,19 @@ btnuSave = Button(updStu, text='Update', font=(
     'Times New Roman', 16, 'bold'), width=10, command=f10)
 btnuBack1 = Button(updStu, text='Back', font=(
     'Times New Roman', 16, 'bold'), width=10, command=f8)
+=======
+            con.close()        
+
+
+lbluRoll = Label(updStu, text = "Enter Roll Number",font=('Times New Roman', 16, 'bold'))
+lbluName = Label(updStu, text = "Enter Name",font=('Times New Roman', 16, 'bold'))
+lbluMarks = Label(updStu, text = "Enter Marks",font=('Times New Roman', 16, 'bold'))
+enuRoll = Entry(updStu, bd=5, font=('Times New Roman', 16))
+enuName = Entry(updStu, bd=5, font=('Times New Roman', 16))
+enuMarks = Entry(updStu, bd=5, font=('Times New Roman', 16))
+btnuSave = Button(updStu, text='Update', font=('Times New Roman', 16, 'bold'), width=10, command=f10)
+btnuBack1 = Button(updStu, text='Back', font=('Times New Roman', 16, 'bold'), width=10, command=f8)
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
 
 lbluRoll.pack(pady=10)
 enuRoll.pack(pady=10)
@@ -419,6 +496,7 @@ btnuBack1.pack(pady=10)
 updStu.withdraw()
 
 
+<<<<<<< HEAD
 # --------------------------------------------------------------------------------------------------------------
 # Delete Student
 delStu = Toplevel(mainMenu)
@@ -436,11 +514,28 @@ def f11():
         messagebox.showerror('Error !', "Roll Number can\'t be empty !")
         endRoll.focus()
         return
+=======
+#--------------------------------------------------------------------------------------------------------------
+#Delete Student
+delStu = Toplevel(root)
+delStu.title("Delete Student Record")
+delStu.geometry("500x500+500+200")
+
+def f9():
+    delStu.withdraw()
+    root.deiconify()
+def f11():
+    if len(endRoll.get()) == 0:
+            messagebox.showerror('Error !', "Roll Number can\'t be empty !")
+            endRoll.focus()
+            return  
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
     if not endRoll.get().isdigit():
         messagebox.showerror('Error !', "Roll number must be integer !")
         endRoll.focus()
         return
     try:
+<<<<<<< HEAD
         con = sqlite3.connect('cruddb.sqlite')
         rno = int(endRoll.get())
         cursor = con.cursor()
@@ -451,25 +546,48 @@ def f11():
         for d in data4:
             if d[0] == rno:
                 present = True
+=======
+        con = cx_Oracle.connect('system/abc123')
+        rno = int(endRoll.get())
+        cursor = con.cursor()
+        sql="select roll from students"
+        cursor.execute(sql)
+        data4 = cursor.fetchall()
+        present=False
+        for d in data4:
+            if d[0]==rno:
+                present=True
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
                 break
         if not present:
             messagebox.showerror("Error!", "Roll Number not found !")
             endRoll.focus()
             return
         else:
+<<<<<<< HEAD
             sql = "delete from students where roll=?"
             args = (rno)
             cursor.execute(sql, args)
+=======
+            sql = "delete from students where roll='%d'"
+            args = (rno)
+            cursor.execute(sql%args)
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
             con.commit()
             messagebox.showinfo('Success !', 'Recored deleted successfully')
             endRoll.delete(0, END)
             endRoll.focus()
+<<<<<<< HEAD
     except sql3lite.Error:
+=======
+    except cx_Oracle.DatabaseError:
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
         con.rollback()
         msg = "Record could not be deleted !"
         messagebox.showerror('Error !', msg)
     finally:
         if con is not None:
+<<<<<<< HEAD
             con.close()
 
 
@@ -480,6 +598,16 @@ btndDelete = Button(delStu, text='Delete', font=(
     'Times New Roman', 16, 'bold'), width=10, command=f11)
 btndBack1 = Button(delStu, text='Back', font=(
     'Times New Roman', 16, 'bold'), width=10, command=f9)
+=======
+            con.close()      
+
+       
+
+lbldRoll = Label(delStu, text = "Enter Roll Number",font=('Times New Roman', 16, 'bold'))
+endRoll = Entry(delStu, bd=5, font=('Times New Roman', 16))
+btndDelete = Button(delStu, text='Delete', font=('Times New Roman', 16, 'bold'), width=10, command=f11)
+btndBack1 = Button(delStu, text='Back', font=('Times New Roman', 16, 'bold'), width=10, command=f9)
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
 
 lbldRoll.pack(pady=10)
 endRoll.pack(pady=10)
@@ -487,4 +615,9 @@ endRoll.pack(pady=10)
 btndDelete.pack(pady=10)
 btndBack1.pack(pady=10)
 delStu.withdraw()
+<<<<<<< HEAD
 mainMenu.mainloop()
+=======
+
+root.mainloop()
+>>>>>>> ec3c514a896387e4d013ea3fe7eeb097e6e0f4b4
