@@ -299,7 +299,7 @@ def f12():
         chart_type = FigureCanvasTkAgg(figure, root)
         chart_type.get_tk_widget().pack()
         df = df[['Name','Marks']].groupby('Name').sum()
-        df.plot(kind='Chart Type such as bar', legend=True, ax=ax)
+        df.plot(kind='bar', legend=True, ax=ax1)
         ax.set_title('Performance')
     except sqlite3.Error:
         messagebox.showerror('Error!', "Records not found !")
