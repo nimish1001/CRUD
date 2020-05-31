@@ -293,7 +293,7 @@ def f12():
         data = {'Name': x,
          'Marks': droll
         }
-        df = DataFrame(data1,columns=['Name','Marks'])
+        df = DataFrame(data,columns=['Name','Marks'])
         figure = plt.Figure(figsize=(6,5), dpi=100)
         ax = figure.add_subplot(111)
         chart_type = FigureCanvasTkAgg(figure, root)
