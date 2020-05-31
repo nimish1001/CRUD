@@ -290,7 +290,7 @@ def f12():
         dname = dname[:5]
         droll = droll[:5]
         x = np.arange(len(dname))
-        data = {'Name': x,
+        data = {'Name': dname,
          'Marks': droll
         }
         df = DataFrame(data,columns=['Name','Marks'])
