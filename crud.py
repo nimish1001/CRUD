@@ -12,6 +12,7 @@ import datetime
 import bs4
 import sqlite3
 from functools import partial
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 con = sqlite3.connect('cruddb.sqlite')
@@ -295,14 +296,13 @@ def f12():
         dname = dname[:5]
         droll = droll[:5]
         x = np.arange(len(dname))
-        plt.bar(x, droll, width=0.25)
-        plt.xticks(x, dname)
-        plt.title("Top Students")
-        plt.xlabel("Name")
-        plt.ylabel('Marks (in %%)')
-        plt.grid()
-#             plt.legend()
-        plt.show()
+        figure = plt.Figure(figsize=(6,5), dpi=100)
+        ax = figure.add_subplot(111)
+        chart_type = FigureCanvasTkAgg(figure, root)
+        chart_type.get_tk_widget().pack()
+        df = df[[x,droll]].groupby(x).sum()
+        df.plot(kind='Chart Type such as bar', legend=True, ax=ax)
+        ax.set_title('Performance')
     except sqlite3.Error:
         messagebox.showerror('Error!', "Records not found !")
     finally:
